@@ -23,15 +23,24 @@ rl.on('line', function(input) {
           db.run("UPDATE makers SET checked_in = 1 WHERE card_id = (?)", [makerId], function(err) {
             console.log("maker with makerId" + makerId + " was checked in");
 
-            var stmt = db.prepare("INSERT INTO checkins VALUES (?, ?, ?)");
-            stmt.run(makerId, new Date().toISOString(), null);
-            stmt.finalize();
+            db.get('SELECT rowid FROM checkins ORDER BY start_time DESC', function(err, checkin) {
+              if (checkin) {
+                var stmt = db.prepare("UPDATE checkins SET end_time = (?) WHERE rowid = (?)");
+                stmt.run(new Date().toISOString(), checkin.rowid);
+                stmt.finalize();
+              }
+            });
           });
         } else {
           // maker is checked in
           db.run("UPDATE makers SET checked_in = 0 WHERE card_id = (?)", [makerId], function(err) {
             console.log("maker with makerId" + makerId + " was checked out");
+
+            var stmt = db.prepare("UPDATE checkins SET end_time = (?) WHERE maker_id");
+            stmt.run(new Date().toISOString());
+            stmt.finalize();
           });
+
         }
 
       } else {
