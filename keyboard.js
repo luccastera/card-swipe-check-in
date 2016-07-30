@@ -64,7 +64,7 @@ Keyboard.prototype.close = function(callback) {
  * Parse Input data
  */
 
-function parse(input, buffer) {
+function parse(buffer) {
 
   var event, value;
 
@@ -252,3 +252,4 @@ function findKeyID( keyCode ) {
 }
 
 module.exports = Keyboard;
+module.exports.parse = parse;
