@@ -28,7 +28,7 @@ $(function() {
           } else {
             $('#makers').html('<ul class="list-group"></ul>');
             makers.forEach(function(maker) {
-              $('#makers ul').append('<li class="list-group-item">' + maker.name + '</li>');
+              $('#makers ul').append('<li class="list-group-item">' + maker.firstname + ' ' + maker.lastname + '</li>');
             });
           }
         }
@@ -47,7 +47,7 @@ $(function() {
           } else {
             $('#currently-checked-in').html('<ul class="list-group"></ul>');
             makers.forEach(function(maker) {
-              $('#currently-checked-in ul').append('<li class="list-group-item">' + maker.name + '</li>');
+              $('#currently-checked-in ul').append('<li class="list-group-item">' + maker.firstname + ' ' + maker.lastname + '</li>');
             });
           }
         }
@@ -67,7 +67,7 @@ $(function() {
           } else {
             $('#checkins').html('<ul class="list-group"></ul>');
             checkins.forEach(function(maker) {
-              var str = '<li class="list-group-item">' + maker.name;
+              var str = '<li class="list-group-item">' + maker.firstname + ' ' + maker.lastname;
               if (maker.start_time != null) {
                 str += ' <span class="checkin-time">checked in ' + moment(maker.start_time).fromNow() + '</span>'
               }
@@ -100,9 +100,4 @@ $(function() {
       $('#card_id').val(cardId);
     }
   }
-
-  var socket = io();
-  socket.on('register-card', function(msg){
-    window.location = '/register?card_id=' + msg;
-  });
 });
