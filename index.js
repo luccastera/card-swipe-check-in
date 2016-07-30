@@ -2,6 +2,18 @@ var express    = require('express');
 var readline   = require('readline');
 var SerialPort = require("serialport");
 
+var stdin = process.stdin;
+
+// without this, we would only get streams once enter is pressed
+stdin.setRawMode( true );
+
+// resume stdin in the parent process (node app won't quit all by itself
+// unless an error or process.exit() happens)
+stdin.resume();
+
+// i don't want binary, do you?
+stdin.setEncoding( 'utf8' );
+
 var port = new SerialPort('/dev/input/event0', {
 });
 
@@ -10,12 +22,11 @@ port.on('data', function(data) {
   //var str = data.toString('utf8');
   //console.log('---');
   //console.log(str);
-  process.stdin.write(data);
+  stdin.write(data);
 });
 
 var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
+  input: stdin
 });
 
 rl.on('line', function(input) {
