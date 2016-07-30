@@ -3,7 +3,9 @@ var SerialPort = require("serialport");
 var port = new SerialPort('/dev/input/event0');
 
 port.on('data', function(data) {
-  console.log( data);
+  var buff = new Buffer(data, 'utf8');
+  buff.toString('hex');
+  console.log(buff);
 });
 
 var makers = [];
