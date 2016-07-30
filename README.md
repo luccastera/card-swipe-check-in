@@ -53,4 +53,14 @@ ssh pi@<ip address>
 
 The default raspberry pi password is `raspberry`
 
+## Install packages
+
+```sh
+sudo apt-get update
+sudo apt-get dist-upgrade
+sudo apt-get install git
+curl -sLS https://apt.adafruit.com/add | sudo bash
+sudo apt-get install -y nodejs
+```
+
 
