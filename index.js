@@ -48,6 +48,12 @@ app.get('/', function (req, res) {
 });
 
 app.get('/makers.json', function(req, res) {
+  db.all("SELECT card_id, name FROM makers", function(err, makers) {
+    return res.json(makers);
+  });
+});
+
+app.get('/checkedin_makers.json', function(req, res) {
   db.all("SELECT card_id, name FROM makers WHERE checked_in = 1", function(err, makers) {
     return res.json(makers);
   });

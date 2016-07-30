@@ -1,7 +1,6 @@
 $(function() {
 
   function getMakers() {
-    console.log('ajax');
     $.ajax({
       method: 'GET',
       dataType: 'json',
@@ -9,7 +8,7 @@ $(function() {
       success: function(makers) {
         if (Array.isArray(makers)) {
           if (makers.length === 0) {
-            $('#makers').html('<p class="text-muted">No one has checked in.</p>');
+            $('#makers').html('<p class="text-muted">No one has registered.</p>');
           } else {
             $('#makers').html('<ul></ul>');
             makers.forEach(function(maker) {
@@ -20,5 +19,28 @@ $(function() {
       }
     });
   }
-  window.setInterval(getMakers, 1000);
+  function getCurrentlyCheckedIn() {
+    $.ajax({
+      method: 'GET',
+      dataType: 'json',
+      url: '/checkedin_makers.json',
+      success: function(makers) {
+        if (Array.isArray(makers)) {
+          if (makers.length === 0) {
+            $('#currently-checked-in').html('<p class="text-muted">No one has checked in.</p>');
+          } else {
+            $('#currently-checked-in').html('<ul></ul>');
+            makers.forEach(function(maker) {
+              $('#currently-checked-in ul').append('<li>' + maker.name + '</li>');
+            });
+          }
+        }
+      }
+    });
+  }
+  getMakers();
+  window.setInterval(getMakers, 10000);
+
+  getCurrentlyCheckedIn();
+  window.setInterval(getCurrentlyCheckedIn, 1000);
 });
