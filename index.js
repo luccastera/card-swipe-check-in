@@ -14,11 +14,20 @@ stdin.resume();
 // i don't want binary, do you?
 stdin.setEncoding( 'utf8' );
 
+stdin.on( 'data', function( key ){
+  // ctrl-c ( end of text )
+  if ( key === '\u0003' ) {
+    process.exit();
+  }
+  // write the key to stdout all normal like
+  process.stdout.write( key );
+});
+
 var port = new SerialPort('/dev/input/event0', {
 });
 
 port.on('data', function(data) {
-  console.log(data);
+  //console.log(data);
   //var str = data.toString('utf8');
   //console.log('---');
   //console.log(str);
