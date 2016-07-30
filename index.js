@@ -12,17 +12,16 @@ var rl = readline.createInterface({
 rl.on('line', function(input) {
   var data = input.toString();
   var makerId = data.slice(1,-1);
-  console.log('looking for maker with id = ' + makerId);
   db.get("SELECT card_id, name, checked_in FROM makers WHERE card_id = (?)", [makerId], function(err, maker) {
     if (err) {
+      console.log("There was an error attempting to find this maker.");
       console.log(err);
     } else {
       if (maker) {
-        console.log('Found maker', maker);
         if (maker.checked_in === 0) {
           // maker is checked out
           db.run("UPDATE makers SET checked_in = 1 WHERE card_id = (?)", [makerId], function(err) {
-            console.log("maker with makerId" + makerId + " was checked in");
+            console.log("Maker with makerId" + makerId + " was checked in.");
 
             var stmt = db.prepare("INSERT INTO checkins VALUES (?, ?, ?)");
             stmt.run(makerId, new Date().toISOString(), null);
@@ -31,7 +30,7 @@ rl.on('line', function(input) {
         } else {
           // maker is checked in
           db.run("UPDATE makers SET checked_in = 0 WHERE card_id = (?)", [makerId], function(err) {
-            console.log("maker with makerId" + makerId + " was checked out");
+            console.log("Maker with makerId" + makerId + " was checked out");
 
             db.get('SELECT rowid FROM checkins ORDER BY start_time DESC', function(err, checkin) {
               if (checkin) {
@@ -45,7 +44,7 @@ rl.on('line', function(input) {
         }
 
       } else {
-        console.log('This user was not found. Please register at /register.');
+        console.log('This maker was not found. Please register at /register.');
       }
     }
   });
