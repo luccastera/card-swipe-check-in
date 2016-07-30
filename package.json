@@ -6,6 +6,7 @@
     "node": "~0.12.6"
   },
   "license": "MIT",
+  "author": "Luc Castera",
   "keywords": [
     "MiamiJS",
     "Raspberry Pi",
