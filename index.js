@@ -22,6 +22,10 @@ rl.on('line', function(input) {
           // maker is checked out
           db.run("UPDATE makers SET checked_in = 1 WHERE card_id = (?)", [makerId], function(err) {
             console.log("maker with makerId" + makerId + " was checked in");
+
+            var stmt = db.prepare("INSERT INTO checkins VALUES (?, ?, ?)");
+            stmt.run(makerId, new Date().toISOString(), null);
+            stmt.finalize();
           });
         } else {
           // maker is checked in
@@ -56,6 +60,12 @@ app.get('/makers.json', function(req, res) {
 app.get('/checkedin_makers.json', function(req, res) {
   db.all("SELECT card_id, name FROM makers WHERE checked_in = 1", function(err, makers) {
     return res.json(makers);
+  });
+});
+
+app.get('/checkins.json', function(req, res) {
+  db.all("SELECT checkins.maker_id, checkins.start_time, checkins.end_time, makers.name FROM checkins, makers WHERE checkins.maker_id = makers.card_id ORDER BY start_time", function(err, checkins) {
+    return res.json(checkins);
   });
 });
 

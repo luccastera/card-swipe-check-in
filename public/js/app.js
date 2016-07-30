@@ -38,9 +38,44 @@ $(function() {
       }
     });
   }
+
+  function getCheckins() {
+    $.ajax({
+      method: 'GET',
+      dataType: 'json',
+      url: '/checkins.json',
+      success: function(checkins) {
+        if (Array.isArray(checkins)) {
+          if (checkins.length === 0) {
+            $('#checkins').html('<p class="text-muted">No checkins yet.</p>');
+          } else {
+            $('#checkins').html('<ul></ul>');
+            checkins.forEach(function(maker) {
+              var str = '<li>' + maker.name;
+              if (maker.start_time != null) {
+                str += ' <span class="checkin-time">checked in ' + moment(maker.start_time).fromNow() + '</span>'
+              }
+              console.log(maker);
+              if (maker.end_time != null) {
+                str += ' and ';
+                str += ' <span class="checkin-time">checked out ' + moment(maker.end_time).fromNow() + '</span>'
+              }
+              str += '</li>';
+
+              $('#checkins ul').append(str);
+            });
+          }
+        }
+      }
+    });
+  }
+
   getMakers();
   window.setInterval(getMakers, 10000);
 
   getCurrentlyCheckedIn();
   window.setInterval(getCurrentlyCheckedIn, 1000);
+
+  getCheckins();
+  window.setInterval(getCheckins, 1000);
 });
