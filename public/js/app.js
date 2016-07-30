@@ -70,12 +70,15 @@ $(function() {
     });
   }
 
-  getMakers();
-  window.setInterval(getMakers, 10000);
+  console.log(window.location.pathname);
+  if (window.location.pathname === '/') {
+    getMakers();
+    window.setInterval(getMakers, 10000);
 
-  getCurrentlyCheckedIn();
-  window.setInterval(getCurrentlyCheckedIn, 1000);
+    getCurrentlyCheckedIn();
+    window.setInterval(getCurrentlyCheckedIn, 1000);
 
-  getCheckins();
-  window.setInterval(getCheckins, 1000);
+    getCheckins();
+    window.setInterval(getCheckins, 1000);
+  }
 });

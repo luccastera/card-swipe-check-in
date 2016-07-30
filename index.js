@@ -2,6 +2,7 @@ var express    = require('express');
 var readline   = require('readline');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('makers.db');
+var bodyParser = require('body-parser')
 
 var rl = readline.createInterface({
   input: process.stdin,
@@ -23,6 +24,15 @@ rl.on('line', function(input) {
           db.run("UPDATE makers SET checked_in = 1 WHERE card_id = (?)", [makerId], function(err) {
             console.log("maker with makerId" + makerId + " was checked in");
 
+            var stmt = db.prepare("INSERT INTO checkins VALUES (?, ?, ?)");
+            stmt.run(makerId, new Date().toISOString(), null);
+            stmt.finalize();
+          });
+        } else {
+          // maker is checked in
+          db.run("UPDATE makers SET checked_in = 0 WHERE card_id = (?)", [makerId], function(err) {
+            console.log("maker with makerId" + makerId + " was checked out");
+
             db.get('SELECT rowid FROM checkins ORDER BY start_time DESC', function(err, checkin) {
               if (checkin) {
                 var stmt = db.prepare("UPDATE checkins SET end_time = (?) WHERE rowid = (?)");
@@ -30,15 +40,6 @@ rl.on('line', function(input) {
                 stmt.finalize();
               }
             });
-          });
-        } else {
-          // maker is checked in
-          db.run("UPDATE makers SET checked_in = 0 WHERE card_id = (?)", [makerId], function(err) {
-            console.log("maker with makerId" + makerId + " was checked out");
-
-            var stmt = db.prepare("UPDATE checkins SET end_time = (?) WHERE maker_id");
-            stmt.run(new Date().toISOString());
-            stmt.finalize();
           });
 
         }
@@ -55,6 +56,7 @@ var app = express();
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get('/', function (req, res) {
   res.render('pages/index');
@@ -77,6 +79,22 @@ app.get('/checkins.json', function(req, res) {
     return res.json(checkins);
   });
 });
+
+app.get('/register', function (req, res) {
+  res.render('pages/register');
+});
+
+app.post('/register', function (req, res) {
+  if (req.body.card_id && req.body.name) {
+    var stmt = db.prepare("INSERT INTO makers VALUES (?, ?, ?)");
+    stmt.run(req.body.card_id, req.body.name, 0);
+    stmt.finalize();
+    return res.redirect('/')
+  } else {
+    return res.redirect('/register');
+  }
+});
+
 
 app.use(express.static('public'));
 
