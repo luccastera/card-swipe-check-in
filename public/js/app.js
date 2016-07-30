@@ -10,9 +10,9 @@ $(function() {
           if (makers.length === 0) {
             $('#makers').html('<p class="text-muted">No one has registered.</p>');
           } else {
-            $('#makers').html('<ul></ul>');
+            $('#makers').html('<ul class="list-group"></ul>');
             makers.forEach(function(maker) {
-              $('#makers ul').append('<li>' + maker.name + '</li>');
+              $('#makers ul').append('<li class="list-group-item">' + maker.name + '</li>');
             });
           }
         }
@@ -29,9 +29,9 @@ $(function() {
           if (makers.length === 0) {
             $('#currently-checked-in').html('<p class="text-muted">No one has checked in.</p>');
           } else {
-            $('#currently-checked-in').html('<ul></ul>');
+            $('#currently-checked-in').html('<ul class="list-group"></ul>');
             makers.forEach(function(maker) {
-              $('#currently-checked-in ul').append('<li>' + maker.name + '</li>');
+              $('#currently-checked-in ul').append('<li class="list-group-item">' + maker.name + '</li>');
             });
           }
         }
@@ -49,9 +49,9 @@ $(function() {
           if (checkins.length === 0) {
             $('#checkins').html('<p class="text-muted">No checkins yet.</p>');
           } else {
-            $('#checkins').html('<ul></ul>');
+            $('#checkins').html('<ul class="list-group"></ul>');
             checkins.forEach(function(maker) {
-              var str = '<li>' + maker.name;
+              var str = '<li class="list-group-item">' + maker.name;
               if (maker.start_time != null) {
                 str += ' <span class="checkin-time">checked in ' + moment(maker.start_time).fromNow() + '</span>'
               }
