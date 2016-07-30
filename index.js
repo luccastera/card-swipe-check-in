@@ -14,7 +14,7 @@ stdin.resume();
 // i don't want binary, do you?
 stdin.setEncoding( 'utf8' );
 
-stdin.on( 'data', function( key ){
+stdin.on('data', function( key ){
   // ctrl-c ( end of text )
   if ( key === '\u0003' ) {
     process.exit();
@@ -31,7 +31,7 @@ port.on('data', function(data) {
   //var str = data.toString('utf8');
   //console.log('---');
   //console.log(str);
-  stdin.write(data);
+  //stdin.write(data);
 });
 
 var rl = readline.createInterface({
