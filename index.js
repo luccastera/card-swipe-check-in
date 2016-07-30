@@ -17,7 +17,7 @@ var rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.on('line', (input) => {
+rl.on('line', function(input) {
   var makerId = input.slice(1,1);
   console.log(makerId + ' maker just swiped');
   if (makers.indexOf(makerId) > 0) {
