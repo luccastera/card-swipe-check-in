@@ -6,7 +6,7 @@ var port = new SerialPort('/dev/input/event0', {
 
 port.on('data', function(data) {
   console.log(data);
-  var decoder = new StringDecoder('ascii');
+  var decoder = new StringDecoder('hex');
   //console.log(data);
   //var buff = new Buffer(data);
   //var str = data.toString('hex');
