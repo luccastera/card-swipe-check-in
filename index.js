@@ -11,12 +11,25 @@ var rl = readline.createInterface({
 rl.on('line', function(input) {
   var data = input.toString();
   var makerId = data.slice(1,-1);
-  db.each("SELECT card_id, name FROM makers WHERE card_id = (?)", function(err, row) {
+  console.log('looking for maker with id = ' + makerId);
+  db.get("SELECT card_id, name, checked_in FROM makers WHERE card_id = (?)", [makerId], function(err, maker) {
     if (err) {
       console.log(err);
     } else {
-      if (row) {
-        console.log(row);
+      if (maker) {
+        console.log('Found maker', maker);
+        if (maker.checked_in === 0) {
+          // maker is checked out
+          db.run("UPDATE makers SET checked_in = 1 WHERE card_id = (?)", [makerId], function(err) {
+            console.log("maker with makerId" + makerId + " was checked in");
+          });
+        } else {
+          // maker is checked in
+          db.run("UPDATE makers SET checked_in = 0 WHERE card_id = (?)", [makerId], function(err) {
+            console.log("maker with makerId" + makerId + " was checked out");
+          });
+        }
+
       } else {
         console.log('not found');
       }
@@ -35,7 +48,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/makers.json', function(req, res) {
-  db.all("SELECT card_id, name FROM makers", function(err, makers) {
+  db.all("SELECT card_id, name FROM makers WHERE checked_in = 1", function(err, makers) {
     return res.json(makers);
   });
 });
