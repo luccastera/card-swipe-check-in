@@ -3,7 +3,7 @@ var SerialPort = require("serialport");
 
 var port = new SerialPort('/dev/input/event0', {
   parser: SerialPort.parsers.readline('\n'),
-  baudRate: 9600
+  baudRate: 2400
 });
 
 port.on('data', function(data) {
