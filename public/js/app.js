@@ -1,5 +1,21 @@
 $(function() {
 
+  function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : sParameterName[1];
+      }
+    }
+  }
+
+
   function getMakers() {
     $.ajax({
       method: 'GET',
@@ -55,7 +71,6 @@ $(function() {
               if (maker.start_time != null) {
                 str += ' <span class="checkin-time">checked in ' + moment(maker.start_time).fromNow() + '</span>'
               }
-              console.log(maker);
               if (maker.end_time != null) {
                 str += ' and ';
                 str += ' <span class="checkin-time">checked out ' + moment(maker.end_time).fromNow() + '</span>'
@@ -70,7 +85,6 @@ $(function() {
     });
   }
 
-  console.log(window.location.pathname);
   if (window.location.pathname === '/') {
     getMakers();
     window.setInterval(getMakers, 10000);
@@ -80,5 +94,10 @@ $(function() {
 
     getCheckins();
     window.setInterval(getCheckins, 1000);
+  } else if (window.location.pathname === '/register') {
+    var cardId = getUrlParameter('card_id');
+    if (cardId !== '') {
+      $('#card_id').val(cardId);
+    }
   }
 });
