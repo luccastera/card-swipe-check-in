@@ -7,6 +7,8 @@ var port = new SerialPort('/dev/input/event0', {
 
 port.on('data', function(data) {
   console.log(data);
+  var str = data.toString();
+  console.log(str);
 });
 
 var makers = [];
