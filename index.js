@@ -8,8 +8,10 @@ var port = new SerialPort('/dev/input/event0', {
 
 port.on('data', function(data) {
   console.log(data);
-  var parsed = parse(data);
-  console.log(parsed);
+  var parseEvent = parse(data);
+  parseEvent.on('event0', function() {
+    console.log(arguments);
+  });
 });
 
 
