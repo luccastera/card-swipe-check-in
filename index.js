@@ -1,14 +1,28 @@
 var express    = require('express');
+var readline   = require('readline');
 var SerialPort = require("serialport");
 
-var port = new SerialPort('/dev/input/event0', {
+//var port = new SerialPort('/dev/input/event0', {
+//});
+
+//port.on('data', function(data) {
+  //console.log(data);
+  //var str = data.toString('utf8');
+  //console.log('---');
+  //console.log(str);
+//});
+
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
 });
 
-port.on('data', function(data) {
-  console.log(data);
-  var str = data.toString('utf8');
-  console.log('---');
-  console.log(str);
+rl.on('line', (input) => {
+  var makerId = input.slice(1,1);
+  console.log(makerId + ' maker just swiped');
+  if (makers.indexOf(makerId) > 0) {
+    makers.push(makerId);
+  }
 });
 
 var makers = [];
