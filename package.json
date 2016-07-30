@@ -1,0 +1,21 @@
+{
+  "name": "pi-check-in",
+  "description": "Check-in with a card reader on a raspberry Pi.",
+  "version": "0.0.1",
+  "engines": {
+    "node": "~0.12.6"
+  },
+  "keywords": [
+    "MiamiJS",
+    "Raspberry Pi",
+    "Mag stripe card reader"
+  ],
+  "homepage": "https://github.com/lore-code/Phone-reader-check-in",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "serialport": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {}
+}

@@ -60,7 +60,7 @@ sudo apt-get update
 sudo apt-get dist-upgrade
 sudo apt-get install git
 curl -sLS https://apt.adafruit.com/add | sudo bash
-sudo apt-get install -y nodejs
+sudo apt-get install node
 ```
 
 
