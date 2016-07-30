@@ -2,7 +2,6 @@ var express    = require('express');
 var StringDecoder = require('string_decoder').StringDecoder;
 var SerialPort = require("serialport");
 var port = new SerialPort('/dev/input/event0', {
-  parser: SerialPort.parsers.readline('\n')
 });
 
 port.on('data', function(data) {
