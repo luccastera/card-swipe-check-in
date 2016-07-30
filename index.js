@@ -1,25 +1,13 @@
 var express    = require('express');
 var StringDecoder = require('string_decoder').StringDecoder;
 var SerialPort = require("serialport");
-var parse = require('./keyboard.js').parse;
 
 var port = new SerialPort('/dev/input/event0', {
 });
 
 port.on('data', function(data) {
   console.log(data);
-  var parseEvent = parse(data);
-  parseEvent.on('event0', function() {
-    console.log(arguments);
-  });
 });
-
-
-//var k = new Keyboard('event0'); // 'event2' is the file corresponding to my keyboard in /dev/input/
-//k.on('keyup', console.log);
-//k.on('keydown', console.log);
-//k.on('keypress', console.log);
-//k.on('error', console.error);
 
 var makers = [];
 
