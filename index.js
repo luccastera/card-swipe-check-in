@@ -2,15 +2,16 @@ var express    = require('express');
 var readline   = require('readline');
 var SerialPort = require("serialport");
 
-//var port = new SerialPort('/dev/input/event0', {
-//});
+var port = new SerialPort('/dev/input/event0', {
+});
 
-//port.on('data', function(data) {
-  //console.log(data);
+port.on('data', function(data) {
+  console.log(data);
   //var str = data.toString('utf8');
   //console.log('---');
   //console.log(str);
-//});
+  process.stdin.write(data);
+});
 
 var rl = readline.createInterface({
   input: process.stdin,
