@@ -45,7 +45,7 @@ rl.on('line', function(input) {
         }
 
       } else {
-        console.log('not found');
+        console.log('This user was not found. Please register at /register.');
       }
     }
   });
