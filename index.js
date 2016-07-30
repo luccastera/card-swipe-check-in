@@ -1,16 +1,13 @@
 var express    = require('express');
-var serialport = require('serialport');
-var SerialPort = serialport.SerialPort;
+var SerialPort = require("serialport");
 
 var port = new SerialPort('/dev/input/event0', {
-  baudrate: 9600,
-  parser: serialport.parsers.readline('\r\n')
+  parser: SerialPort.parsers.readline('\n'),
+  baudRate: 9600
 });
 
 port.on('data', function(data) {
   console.log(data);
-  var str = data.toString();
-  console.log(str);
 });
 
 var makers = [];
