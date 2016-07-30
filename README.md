@@ -64,3 +64,9 @@ sudo apt-get install node
 ```
 
 
+## Install sqlite3
+
+```
+sudo apt-get install libsqlite3-dev sqlite3
+npm install sqlite3
+```

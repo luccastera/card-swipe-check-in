@@ -21,7 +21,7 @@ rl.on('line', function(input) {
         if (maker.checked_in === 0) {
           // maker is checked out
           db.run("UPDATE makers SET checked_in = 1 WHERE card_id = (?)", [makerId], function(err) {
-            console.log("Maker with makerId" + makerId + " was checked in.");
+            console.log("Maker with maker ID " + makerId + " was checked in.");
 
             var stmt = db.prepare("INSERT INTO checkins VALUES (?, ?, ?)");
             stmt.run(makerId, new Date().toISOString(), null);
@@ -30,7 +30,7 @@ rl.on('line', function(input) {
         } else {
           // maker is checked in
           db.run("UPDATE makers SET checked_in = 0 WHERE card_id = (?)", [makerId], function(err) {
-            console.log("Maker with makerId" + makerId + " was checked out");
+            console.log("Maker with maker ID " + makerId + " was checked out");
 
             db.get('SELECT rowid FROM checkins ORDER BY start_time DESC', function(err, checkin) {
               if (checkin) {
@@ -74,7 +74,7 @@ app.get('/checkedin_makers.json', function(req, res) {
 });
 
 app.get('/checkins.json', function(req, res) {
-  db.all("SELECT checkins.maker_id, checkins.start_time, checkins.end_time, makers.name FROM checkins, makers WHERE checkins.maker_id = makers.card_id ORDER BY start_time", function(err, checkins) {
+  db.all("SELECT checkins.maker_id, checkins.start_time, checkins.end_time, makers.name FROM checkins, makers WHERE checkins.maker_id = makers.card_id ORDER BY start_time DESC", function(err, checkins) {
     return res.json(checkins);
   });
 });
