@@ -6,12 +6,11 @@ var port = new SerialPort('/dev/input/event0', {
 
 port.on('data', function(data) {
   console.log(data);
-  var buf = Buffer.from(data);
   var decoder = new StringDecoder('utf8');
   //console.log(data);
   //var buff = new Buffer(data);
   //var str = data.toString('hex');
-  decoder.write(buf);
+  decoder.write(data);
   var str = decoder.end();
   console.log(str);
 });
