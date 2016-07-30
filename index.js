@@ -1,11 +1,14 @@
 var express    = require('express');
 var SerialPort = require("serialport");
-var port = new SerialPort('/dev/input/event0');
+var port = new SerialPort('/dev/input/event0', {
+  parser: SerialPort.parsers.readline('\n')
+});
 
 port.on('data', function(data) {
+  console.log(data);
   //var buff = new Buffer(data);
-  var str = data.toString('utf8');
-  console.log(str);
+  //var str = data.toString('ascii');
+  //console.log(str);
 });
 
 var makers = [];
