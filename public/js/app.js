@@ -13,7 +13,7 @@ $(function() {
           } else {
             $('#makers').html('<ul></ul>');
             makers.forEach(function(maker) {
-              $('#makers ul').append('<li>' + maker + '</li>');
+              $('#makers ul').append('<li>' + maker.name + '</li>');
             });
           }
         }

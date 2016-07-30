@@ -1,5 +1,7 @@
 var express    = require('express');
 var readline   = require('readline');
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('makers.db');
 
 var rl = readline.createInterface({
   input: process.stdin,
@@ -9,10 +11,18 @@ var rl = readline.createInterface({
 rl.on('line', function(input) {
   var data = input.toString();
   var makerId = data.slice(1,-1);
-  makers.push(makerId);
+  db.each("SELECT card_id, name FROM makers WHERE card_id = (?)", function(err, row) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (row) {
+        console.log(row);
+      } else {
+        console.log('not found');
+      }
+    }
+  });
 });
-
-var makers = [];
 
 var app = express();
 
@@ -25,7 +35,9 @@ app.get('/', function (req, res) {
 });
 
 app.get('/makers.json', function(req, res) {
-  return res.json(makers);
+  db.all("SELECT card_id, name FROM makers", function(err, makers) {
+    return res.json(makers);
+  });
 });
 
 app.use(express.static('public'));
