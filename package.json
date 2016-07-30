@@ -5,12 +5,14 @@
   "engines": {
     "node": "~0.12.6"
   },
+  "license": "MIT",
   "keywords": [
     "MiamiJS",
     "Raspberry Pi",
     "Mag stripe card reader"
   ],
   "homepage": "https://github.com/lore-code/Phone-reader-check-in",
+  "repository": "https://github.com/lore-code/Phone-reader-check-in",
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.15.2",
