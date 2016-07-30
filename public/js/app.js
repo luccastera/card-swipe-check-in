@@ -100,4 +100,9 @@ $(function() {
       $('#card_id').val(cardId);
     }
   }
+
+  var socket = io();
+  socket.on('register-card', function(msg){
+    window.location = '/register?card_id=' + msg;
+  });
 });

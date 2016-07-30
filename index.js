@@ -45,12 +45,16 @@ rl.on('line', function(input) {
 
       } else {
         console.log('This maker was not found. Please register at /register.');
+        io.emit('register-card', makerId);
       }
     }
   });
 });
 
 var app = express();
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -97,6 +101,6 @@ app.post('/register', function (req, res) {
 
 app.use(express.static('public'));
 
-app.listen(3000, function () {
+http.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
