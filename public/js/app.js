@@ -85,6 +85,28 @@ $(function() {
     });
   }
 
+  function getLeaderboard() {
+    $.ajax({
+      method: 'GET',
+      dataType: 'json',
+      url: '/leaderboard.json',
+      success: function(makers) {
+        if (Array.isArray(makers)) {
+          if (makers.length === 0) {
+            $('#leaderboard').html('<p class="text-muted">No one yet.</p>');
+          } else {
+            $('#leaderboard').html('<ul class="list-group"></ul>');
+            makers.forEach(function(maker, index) {
+              $('#leaderboard ul').append('<li class="list-group-item"><span class="badge">' + Math.round(parseFloat(maker.time_in)) + ' mins</span>' + (index + 1) + ' - ' + maker.firstname + ' ' + maker.lastname + '</li>');
+            });
+          }
+        }
+      }
+    });
+  }
+
+
+
   if (window.location.pathname === '/') {
     getMakers();
     window.setInterval(getMakers, 10000);
@@ -94,6 +116,8 @@ $(function() {
 
     getCheckins();
     window.setInterval(getCheckins, 1000);
+
+    getLeaderboard();
   } else if (window.location.pathname === '/register') {
     var cardId = getUrlParameter('card_id');
     if (cardId !== '') {

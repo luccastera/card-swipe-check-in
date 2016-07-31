@@ -108,6 +108,12 @@ app.get('/register', function (req, res) {
   res.render('pages/register');
 });
 
+app.get('/leaderboard.json', function(req, res) {
+  db.all("SELECT SUM((julianday(checkins.end_time) - julianday(checkins.start_time)) * 24 * 60) as time_in, checkins.maker_id, checkins.start_time, checkins.end_time, makers.firstname, makers.lastname, makers.city, makers.state FROM checkins, makers WHERE makers.card_id == checkins.maker_id AND checkins.end_time IS NOT NULL GROUP BY checkins.maker_id ORDER BY time_in DESC ", function(err, results) {
+    return res.json(results);
+  });
+});
+
 app.post('/register', function (req, res) {
   if (req.body.card_id && req.body.firstname && req.body.lastname) {
     var stmt = db.prepare("INSERT INTO makers VALUES (?, ?, ?, ?, ?, ?)");
@@ -123,5 +129,5 @@ app.post('/register', function (req, res) {
 app.use(express.static('public'));
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Card Swipe App listening on port 3000!');
 });
